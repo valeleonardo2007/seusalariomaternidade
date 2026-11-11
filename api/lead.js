@@ -4,7 +4,7 @@
 // Sem a variável, a função não faz nada (o pixel do navegador continua valendo).
 
 const GRAPH_VERSION = "v25.0";
-const EVENTOS_PERMITIDOS = new Set(["Lead", "LeadCLT"]);
+const EVENTOS_PERMITIDOS = new Set(["Contact", "LeadCLT"]);
 
 function readCookie(header, name) {
   const m = (header || "").match(new RegExp("(?:^|;\\s*)" + name + "=([^;]+)"));
