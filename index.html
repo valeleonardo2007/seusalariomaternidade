@@ -36,7 +36,7 @@ window.ADVOGADOS = {
     tratamento: "Dr. Edvaldo",
     feminino: false,
     whatsapp: "558699353250",
-    pixel: "",  // TODO: pixel próprio do Dr. Edvaldo
+    pixel: "2206280920232103",
     cltUrl: ""
   }
 };
@@ -301,13 +301,38 @@ window.ADVOGADOS = {
       "Quero saber mais sobre o salário-maternidade.";
   }
 
+  function newEventId() {
+    try { if (window.crypto && crypto.randomUUID) return crypto.randomUUID(); } catch (e) {}
+    return Date.now().toString(36) + Math.random().toString(36).slice(2);
+  }
+
+  // Mesmo evento vai pelo pixel (navegador) e pela API de Conversões (servidor),
+  // com o mesmo eventID para a Meta deduplicar.
+  function sendServerEvent(evt, eventId) {
+    if (!ADV.pixel) return;
+    var payload = JSON.stringify({
+      slug: ADV.slug, pixel_id: ADV.pixel, event_name: evt, event_id: eventId,
+      event_source_url: location.href, content_name: "salario_maternidade_quiz"
+    });
+    try {
+      if (navigator.sendBeacon) {
+        navigator.sendBeacon("/api/lead", new Blob([payload], { type: "application/json" }));
+      } else {
+        fetch("/api/lead", { method: "POST", headers: { "Content-Type": "application/json" },
+          body: payload, keepalive: true });
+      }
+    } catch (e) {}
+  }
+
   // Dispara evento e navega depois, para o request do pixel não ser cortado
   function trackThenGo(evt, isCustom, url) {
     var data = { content_name: "salario_maternidade_quiz", content_category: ADV.slug };
+    var eventId = newEventId();
     try {
-      if (isCustom) fbq("trackCustom", evt, data);
-      else fbq("track", evt, data);
+      if (isCustom) fbq("trackCustom", evt, data, { eventID: eventId });
+      else fbq("track", evt, data, { eventID: eventId });
     } catch (e) {}
+    sendServerEvent(evt, eventId);
     setTimeout(function () { window.location.href = url; }, 250);
   }
 
