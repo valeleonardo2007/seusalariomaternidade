@@ -1,0 +1,339 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Salário-Maternidade · Descubra em 1 minuto</title>
+<meta name="description" content="Responda 3 perguntas rápidas e veja se podemos te ajudar com o salário-maternidade.">
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#fbf6f3">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+
+<script>
+/* ================= CONFIGURAÇÃO — edite só aqui ================= */
+window.QUIZ_CONFIG = {
+  // WhatsApp da Dra. Núbia Santana — DDI 55 + DDD + número, só dígitos
+  WHATSAPP_NUMBER: "557181248743",
+  // ID do Pixel da Meta (só números). Vazio = pixel desligado.
+  META_PIXEL_ID: "",
+  // URL da oferta para CLT. Vazio = mostra tela com WhatsApp (mensagem CLT).
+  CLT_OFFER_URL: ""
+};
+/* ================================================================= */
+</script>
+
+<script>
+/* Meta Pixel — só carrega se houver ID */
+(function () {
+  var id = window.QUIZ_CONFIG.META_PIXEL_ID;
+  if (!id) { window.fbq = function () {}; return; }
+  !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+  n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;
+  n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;
+  t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,
+  document,'script','https://connect.facebook.net/en_US/fbevents.js');
+  fbq('init', id);
+  fbq('track', 'PageView');
+})();
+</script>
+
+<style>
+  :root{
+    --bg:#fbf6f3; --surface:#ffffff; --ink:#2b2230; --muted:#7a6d78;
+    --line:#ecdfd9; --accent:#b4536b; --accent-ink:#ffffff; --accent-soft:#f6e4e8;
+    --wa:#1f9d55; --wa-ink:#ffffff; --radius:18px;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;background:var(--bg);color:var(--ink);
+    font-family:Inter,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+    -webkit-font-smoothing:antialiased}
+  body{min-height:100dvh;display:flex;justify-content:center;padding:24px 16px 40px}
+  .wrap{width:100%;max-width:460px;display:flex;flex-direction:column}
+  header{display:flex;align-items:center;gap:10px;margin-bottom:22px}
+  .back{border:0;background:none;color:var(--muted);font:inherit;font-size:14px;
+    padding:6px 8px 6px 0;cursor:pointer;visibility:hidden}
+  .back.show{visibility:visible}
+  .bar{flex:1;height:6px;background:var(--line);border-radius:99px;overflow:hidden}
+  .bar i{display:block;height:100%;width:0;background:var(--accent);
+    border-radius:99px;transition:width .35s ease}
+  .step{display:none;animation:in .35s ease}
+  .step.on{display:block}
+  @keyframes in{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+  .kicker{font-size:13px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;
+    color:var(--accent);margin:0 0 10px}
+  h1,h2{font-family:Fraunces,Georgia,serif;font-weight:600;line-height:1.15;margin:0 0 10px}
+  h1{font-size:30px} h2{font-size:25px}
+  p.sub{color:var(--muted);font-size:16px;line-height:1.5;margin:0 0 24px}
+  label.lbl{display:block;font-size:14px;font-weight:500;margin-bottom:8px}
+  input[type=text]{width:100%;font:inherit;font-size:17px;padding:16px;
+    border:1.5px solid var(--line);border-radius:14px;background:var(--surface);color:var(--ink)}
+  input[type=text]:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 4px var(--accent-soft)}
+  .opts{display:flex;flex-direction:column;gap:10px}
+  .opt{display:flex;align-items:center;gap:12px;width:100%;text-align:left;font:inherit;
+    font-size:16px;line-height:1.35;color:var(--ink);background:var(--surface);
+    border:1.5px solid var(--line);border-radius:14px;padding:16px;cursor:pointer;
+    transition:border-color .15s, background .15s}
+  .opt::before{content:"";flex:none;width:18px;height:18px;border-radius:50%;
+    border:1.5px solid #cdbcb6}
+  .opt:hover{border-color:var(--accent)}
+  .opt:focus-visible{outline:none;box-shadow:0 0 0 4px var(--accent-soft);border-color:var(--accent)}
+  .opt.picked{border-color:var(--accent);background:var(--accent-soft)}
+  .opt.picked::before{border-color:var(--accent);background:var(--accent);
+    box-shadow:inset 0 0 0 3px var(--accent-soft)}
+  .btn{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;
+    font:inherit;font-size:17px;font-weight:600;padding:17px;border:0;border-radius:14px;
+    cursor:pointer;text-decoration:none;margin-top:16px}
+  .btn-primary{background:var(--accent);color:var(--accent-ink)}
+  .btn-primary:disabled{opacity:.45;cursor:not-allowed}
+  .btn-wa{background:var(--wa);color:var(--wa-ink);font-size:18px;padding:19px}
+  .btn-wa svg{width:22px;height:22px;fill:currentColor}
+  .card{background:var(--surface);border:1.5px solid var(--line);border-radius:var(--radius);padding:24px}
+  .err{color:#b42318;font-size:14px;margin:8px 0 0;min-height:20px}
+  .lgpd{font-size:12.5px;color:var(--muted);line-height:1.5;margin-top:28px;text-align:center}
+  .icon{width:52px;height:52px;border-radius:50%;display:grid;place-items:center;
+    background:var(--accent-soft);color:var(--accent);font-size:26px;margin-bottom:16px}
+  @media (min-width:600px){ h1{font-size:34px} body{padding-top:48px} }
+</style>
+</head>
+<body>
+<main class="wrap">
+  <header>
+    <button class="back" id="back" type="button" aria-label="Voltar">← Voltar</button>
+    <div class="bar" aria-hidden="true"><i id="progress"></i></div>
+  </header>
+
+  <!-- 0 · Nome -->
+  <section class="step on" data-step="name">
+    <p class="kicker">Salário-maternidade</p>
+    <h1>Descubra em 1 minuto se podemos te ajudar</h1>
+    <p class="sub">São só 3 perguntas rápidas. Para começar, como você se chama?</p>
+    <form id="nameForm" novalidate>
+      <label class="lbl" for="name">Seu primeiro nome</label>
+      <input id="name" type="text" autocomplete="given-name" maxlength="40"
+             placeholder="Ex.: Maria" enterkeyhint="next">
+      <p class="err" id="nameErr" role="alert"></p>
+      <button class="btn btn-primary" id="nameBtn" type="submit" disabled>Começar</button>
+    </form>
+  </section>
+
+  <!-- 1 · Gestação -->
+  <section class="step" data-step="q1">
+    <p class="kicker">Pergunta 1 de 3</p>
+    <h2><span class="nm"></span>, você está grávida?</h2>
+    <p class="sub">Escolha a opção que mais combina com você.</p>
+    <div class="opts" data-q="q1">
+      <button class="opt" type="button" data-v="gravida">Sim, o bebê ainda não nasceu</button>
+      <button class="opt" type="button" data-v="nasceu">Meu bebê já nasceu</button>
+      <button class="opt" type="button" data-v="nao">Não estou grávida</button>
+    </div>
+  </section>
+
+  <!-- 2 · Situação de trabalho -->
+  <section class="step" data-step="q2">
+    <p class="kicker">Pergunta 2 de 3</p>
+    <h2><span class="nm"></span>, qual é a sua situação hoje?</h2>
+    <p class="sub">Isso muda o caminho do pedido no INSS.</p>
+    <div class="opts" data-q="q2">
+      <button class="opt" type="button" data-v="mei">Sou MEI</button>
+      <button class="opt" type="button" data-v="autonoma">Sou autônoma e pago o INSS por conta própria</button>
+      <button class="opt" type="button" data-v="desempregada">Estou desempregada, mas já trabalhei ou contribuí antes</button>
+      <button class="opt" type="button" data-v="clt">Trabalho de carteira assinada (CLT)</button>
+      <button class="opt" type="button" data-v="nunca">Nunca trabalhei nem contribuí para o INSS</button>
+    </div>
+  </section>
+
+  <!-- 3 · Contribuição -->
+  <section class="step" data-step="q3">
+    <p class="kicker">Pergunta 3 de 3</p>
+    <h2><span class="nm"></span>, quando foi a última vez que você contribuiu para o INSS?</h2>
+    <p class="sub">Se não lembrar exato, escolha o mais próximo.</p>
+    <div class="opts" data-q="q3">
+      <button class="opt" type="button" data-v="em_dia">Estou contribuindo em dia</button>
+      <button class="opt" type="button" data-v="menos_1">Há menos de 1 ano</button>
+      <button class="opt" type="button" data-v="1_2">Entre 1 e 2 anos</button>
+      <button class="opt" type="button" data-v="mais_2">Há mais de 2 anos</button>
+      <button class="opt" type="button" data-v="nunca">Nunca contribuí</button>
+    </div>
+  </section>
+
+  <!-- Resultado · qualificada -->
+  <section class="step" data-step="ok">
+    <div class="card">
+      <div class="icon" aria-hidden="true">✓</div>
+      <h2><span class="nm"></span>, seu caso pode ser analisado!</h2>
+      <p class="sub">Pelo que você respondeu, vale conversar com a <strong>Dra. Núbia Santana</strong>, advogada especialista no assunto. Ela vai olhar o seu histórico e te dizer o próximo passo, sem compromisso.</p>
+      <a class="btn btn-wa" id="waOk" href="#" rel="noopener">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Zm0 18.2a8.2 8.2 0 0 1-4.2-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2Zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1l-.8 1c-.1.2-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.3-.4.2-.4.7-1.4.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.2 5.2 0 0 0 1.1 2.7 11.8 11.8 0 0 0 4.5 4c1.7.7 2.3.8 3.2.6.5-.1 1.5-.6 1.7-1.2.2-.6.2-1.1.2-1.2-.1-.1-.3-.2-.5-.3Z"/></svg>
+        Falar com a Dra. Núbia no WhatsApp
+      </a>
+    </div>
+  </section>
+
+  <!-- Resultado · CLT -->
+  <section class="step" data-step="clt">
+    <div class="card">
+      <div class="icon" aria-hidden="true">→</div>
+      <h2><span class="nm"></span>, para quem é CLT o caminho é outro</h2>
+      <p class="sub">Para quem trabalha de carteira assinada, o salário-maternidade segue regras diferentes. Temos um atendimento específico para esse caso.</p>
+      <a class="btn btn-wa" id="cltBtn" href="#" rel="noopener">Ver atendimento para CLT</a>
+    </div>
+  </section>
+
+  <!-- Resultado · não qualificada -->
+  <section class="step" data-step="no">
+    <div class="card">
+      <div class="icon" aria-hidden="true">♡</div>
+      <h2>Obrigada por responder, <span class="nm"></span>!</h2>
+      <p class="sub">Pelo que você nos contou, não conseguimos te ajudar com o salário-maternidade neste momento. Se a sua situação mudar, volte aqui.</p>
+    </div>
+  </section>
+
+  <p class="lgpd">Usaremos suas respostas apenas para analisar o seu caso.</p>
+</main>
+
+<script>
+(function () {
+  "use strict";
+  var CFG = window.QUIZ_CONFIG;
+  var state = { name: "", q1: null, q2: null, q3: null };
+  var history = ["name"];
+
+  var LABELS = {
+    q2: {
+      mei: "sou MEI",
+      autonoma: "sou autônoma e pago o INSS por conta própria",
+      desempregada: "estou desempregada, mas já trabalhei/contribuí antes",
+      clt: "trabalho de carteira assinada (CLT)"
+    },
+    q3: {
+      em_dia: "estou contribuindo em dia",
+      menos_1: "contribuí pela última vez há menos de 1 ano",
+      "1_2": "contribuí pela última vez entre 1 e 2 anos atrás",
+      mais_2: "contribuí pela última vez há mais de 2 anos"
+    }
+  };
+  var PROGRESS = { name: 8, q1: 33, q2: 66, q3: 90, ok: 100, clt: 100, no: 100 };
+
+  var $ = function (s, r) { return (r || document).querySelector(s); };
+  var $$ = function (s, r) { return Array.prototype.slice.call((r || document).querySelectorAll(s)); };
+
+  function cleanName(raw) {
+    var first = String(raw || "").trim().replace(/\s+/g, " ").split(" ")[0] || "";
+    first = first.replace(/[^A-Za-zÀ-ÖØ-öø-ÿ'\-]/g, "").slice(0, 30);
+    if (!first) return "";
+    return first.charAt(0).toLocaleUpperCase("pt-BR") + first.slice(1).toLocaleLowerCase("pt-BR");
+  }
+
+  function show(step, push) {
+    $$(".step").forEach(function (el) { el.classList.toggle("on", el.dataset.step === step); });
+    if (push !== false && history[history.length - 1] !== step) history.push(step);
+    $("#progress").style.width = (PROGRESS[step] || 0) + "%";
+    var final = step === "ok" || step === "clt" || step === "no";
+    $("#back").classList.toggle("show", history.length > 1 && !final);
+    // limpa seleção visual ao (re)entrar numa pergunta
+    $$('.step[data-step="' + step + '"] .opt').forEach(function (b) {
+      b.classList.toggle("picked", state[step] === b.dataset.v);
+    });
+    window.scrollTo(0, 0);
+    var focusEl = $('.step[data-step="' + step + '"] .opt, .step[data-step="' + step + '"] h2');
+    if (step !== "name" && focusEl) { focusEl.setAttribute("tabindex", "-1"); }
+  }
+
+  // Lógica de ramificação — fonte única de verdade
+  function next(q, v) {
+    if (q === "q1") return v === "gravida" ? "q2" : "no";
+    if (q === "q2") {
+      if (v === "clt") return "clt";
+      if (v === "nunca") return "no";
+      return "q3";
+    }
+    if (q === "q3") return v === "nunca" ? "no" : "ok";
+    return "no";
+  }
+
+  function waLink(text) {
+    return "https://wa.me/" + String(CFG.WHATSAPP_NUMBER).replace(/\D/g, "") +
+           "?text=" + encodeURIComponent(text);
+  }
+
+  function qualifiedMessage() {
+    return "Olá, Dra. Núbia! Meu nome é " + state.name + " e vim pelo anúncio. " +
+      "Estou grávida, " + LABELS.q2[state.q2] + " e " + LABELS.q3[state.q3] + ". " +
+      "Quero saber se tenho direito ao salário-maternidade.";
+  }
+
+  function cltMessage() {
+    return "Olá, Dra. Núbia! Meu nome é " + state.name + " e vim pelo anúncio. " +
+      "Estou grávida e trabalho de carteira assinada (CLT). " +
+      "Quero saber mais sobre o salário-maternidade.";
+  }
+
+  // Dispara evento e navega depois, para o request do pixel não ser cortado
+  function trackThenGo(evt, isCustom, url) {
+    try {
+      if (isCustom) fbq("trackCustom", evt);
+      else fbq("track", evt, { content_name: "salario_maternidade_quiz" });
+    } catch (e) {}
+    setTimeout(function () { window.location.href = url; }, 250);
+  }
+
+  function prepareResults(step) {
+    if (step === "ok") $("#waOk").href = waLink(qualifiedMessage());
+    if (step === "clt") $("#cltBtn").href = CFG.CLT_OFFER_URL || waLink(cltMessage());
+  }
+
+  // ---- Nome
+  var nameInput = $("#name"), nameBtn = $("#nameBtn");
+  nameInput.addEventListener("input", function () {
+    nameBtn.disabled = !cleanName(nameInput.value);
+    $("#nameErr").textContent = "";
+  });
+  $("#nameForm").addEventListener("submit", function (e) {
+    e.preventDefault();
+    var n = cleanName(nameInput.value);
+    if (!n) { $("#nameErr").textContent = "Digite seu primeiro nome para continuar."; return; }
+    state.name = n;
+    $$(".nm").forEach(function (el) { el.textContent = n; }); // textContent = sem XSS
+    show("q1");
+  });
+
+  // ---- Perguntas
+  $$(".opts").forEach(function (group) {
+    var q = group.dataset.q;
+    group.addEventListener("click", function (e) {
+      var btn = e.target.closest(".opt");
+      if (!btn) return;
+      state[q] = btn.dataset.v;
+      $$(".opt", group).forEach(function (b) { b.classList.toggle("picked", b === btn); });
+      var to = next(q, state[q]);
+      setTimeout(function () { prepareResults(to); show(to); }, 180);
+    });
+  });
+
+  // ---- Voltar
+  $("#back").addEventListener("click", function () {
+    if (history.length < 2) return;
+    history.pop();
+    show(history[history.length - 1], false);
+  });
+
+  // ---- Conversões
+  $("#waOk").addEventListener("click", function (e) {
+    e.preventDefault();
+    trackThenGo("Lead", false, this.href);
+  });
+  $("#cltBtn").addEventListener("click", function (e) {
+    e.preventDefault();
+    // evento separado: não contamina a otimização do Lead principal
+    trackThenGo("LeadCLT", true, this.href);
+  });
+
+  // expõe para testes
+  window.__quiz = { next: next, cleanName: cleanName, state: state,
+    qualifiedMessage: qualifiedMessage };
+})();
+</script>
+</body>
+</html>
