@@ -13,7 +13,9 @@
 
 <script>
 /* ================= CADASTRO DE ADVOGADOS — edite só aqui =================
-   A chave é o caminho da URL: seusalariomaternidade.vercel.app/<chave>
+   Cada advogado tem seu subdomínio: <chave>.vercel.app  (ex.: nubiasantana.vercel.app)
+   O domínio precisa estar adicionado no projeto do Vercel (Settings → Domains).
+   O caminho antigo seusalariomaternidade.vercel.app/<chave> continua funcionando.
    Use só letras minúsculas e números na chave.
    - nome:       nome completo exibido na página
    - tratamento: como a mensagem do WhatsApp começa ("Olá, <tratamento>!")
@@ -43,8 +45,12 @@ window.ADVOGADOS = {
 /* ========================================================================= */
 
 (function () {
-  var slug = location.pathname.replace(/^\/+|\/+$/g, "").split("/")[0].toLowerCase();
-  var adv = Object.prototype.hasOwnProperty.call(window.ADVOGADOS, slug) ? window.ADVOGADOS[slug] : null;
+  var has = function (k) { return Object.prototype.hasOwnProperty.call(window.ADVOGADOS, k); };
+  // 1º subdomínio (nubiasantana.vercel.app), 2º caminho (…/nubiasantana)
+  var sub = location.hostname.toLowerCase().split(".")[0];
+  var path = location.pathname.replace(/^\/+|\/+$/g, "").split("/")[0].toLowerCase();
+  var slug = has(sub) ? sub : (has(path) ? path : "");
+  var adv = slug ? window.ADVOGADOS[slug] : null;
   window.ADV = adv ? Object.assign({ slug: slug }, adv) : null;
 
   /* Meta Pixel — só carrega se o advogado tiver ID */
@@ -54,9 +60,8 @@ window.ADVOGADOS = {
   n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;
   t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,
   document,'script','https://connect.facebook.net/en_US/fbevents.js');
-  // Desliga eventos automáticos (texto dos botões) e correspondência avançada automática
-  // (nome digitado): gravidez é dado sensível — só os eventos explícitos vão para a Meta.
-  fbq('set', 'autoConfig', false, adv.pixel);
+  // Configuração automática LIGADA: necessária para a Ferramenta de Configuração de
+  // Eventos da Meta (o evento "Entrar em contato" é marcado lá, não no código).
   fbq('init', adv.pixel);
   fbq('track', 'PageView');
 })();
@@ -112,6 +117,7 @@ window.ADVOGADOS = {
   .btn-primary:disabled{opacity:.45;cursor:not-allowed}
   .btn-wa{background:var(--wa);color:var(--wa-ink);font-size:18px;padding:19px}
   .btn-wa svg{width:22px;height:22px;fill:currentColor}
+  .btn-wa *{pointer-events:none}  /* o clique sempre cai no próprio botão */
   .card{background:var(--surface);border:1.5px solid var(--line);border-radius:var(--radius);padding:24px}
   .err{color:#b42318;font-size:14px;margin:8px 0 0;min-height:20px}
   .lgpd{font-size:12.5px;color:var(--muted);line-height:1.5;margin-top:28px;text-align:center}
@@ -186,7 +192,7 @@ window.ADVOGADOS = {
       <div class="icon" aria-hidden="true">✓</div>
       <h2><span class="nm"></span>, seu caso pode ser analisado!</h2>
       <p class="sub">Pelo que você respondeu, vale conversar com <span class="adv-art">a</span> <strong class="adv-nome"></strong>, <span class="adv-prof">advogada</span> especialista no assunto. <span class="adv-pron">Ela</span> vai olhar o seu histórico e te dizer o próximo passo, sem compromisso.</p>
-      <a class="btn btn-wa" id="waOk" href="#" rel="noopener">
+      <a class="btn btn-wa" id="waOk" href="#" rel="noopener" data-wa="">
         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Zm0 18.2a8.2 8.2 0 0 1-4.2-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2Zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1l-.8 1c-.1.2-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.3-.4.2-.4.7-1.4.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.2 5.2 0 0 0 1.1 2.7 11.8 11.8 0 0 0 4.5 4c1.7.7 2.3.8 3.2.6.5-.1 1.5-.6 1.7-1.2.2-.6.2-1.1.2-1.2-.1-.1-.3-.2-.5-.3Z"/></svg>
         <span>Falar com <span class="adv-art">a</span> <span class="adv-trat"></span> no WhatsApp</span>
       </a>
@@ -199,7 +205,7 @@ window.ADVOGADOS = {
       <div class="icon" aria-hidden="true">→</div>
       <h2><span class="nm"></span>, para quem é CLT o caminho é outro</h2>
       <p class="sub">Para quem trabalha de carteira assinada, o salário-maternidade segue regras diferentes. Temos um atendimento específico para esse caso.</p>
-      <a class="btn btn-wa" id="cltBtn" href="#" rel="noopener">Ver atendimento para CLT</a>
+      <a class="btn btn-wa" id="cltBtn" href="#" rel="noopener" data-wa="">Ver atendimento para CLT</a>
     </div>
   </section>
 
@@ -304,44 +310,18 @@ window.ADVOGADOS = {
       "Quero saber mais sobre o salário-maternidade.";
   }
 
-  function newEventId() {
-    try { if (window.crypto && crypto.randomUUID) return crypto.randomUUID(); } catch (e) {}
-    return Date.now().toString(36) + Math.random().toString(36).slice(2);
-  }
-
-  // Mesmo evento vai pelo pixel (navegador) e pela API de Conversões (servidor),
-  // com o mesmo eventID para a Meta deduplicar.
-  function sendServerEvent(evt, eventId) {
-    if (!ADV.pixel) return;
-    var payload = JSON.stringify({
-      slug: ADV.slug, pixel_id: ADV.pixel, event_name: evt, event_id: eventId,
-      event_source_url: location.href, content_name: "salario_maternidade_quiz"
-    });
-    try {
-      if (navigator.sendBeacon) {
-        navigator.sendBeacon("/api/lead", new Blob([payload], { type: "application/json" }));
-      } else {
-        fetch("/api/lead", { method: "POST", headers: { "Content-Type": "application/json" },
-          body: payload, keepalive: true });
-      }
-    } catch (e) {}
-  }
-
-  // Dispara evento e navega depois, para o request do pixel não ser cortado
-  function trackThenGo(evt, isCustom, url) {
-    var data = { content_name: "salario_maternidade_quiz", content_category: ADV.slug };
-    var eventId = newEventId();
-    try {
-      if (isCustom) fbq("trackCustom", evt, data, { eventID: eventId });
-      else fbq("track", evt, data, { eventID: eventId });
-    } catch (e) {}
-    sendServerEvent(evt, eventId);
-    setTimeout(function () { window.location.href = url; }, 250);
+  // Sem evento no código: o "Entrar em contato" é marcado pela ferramenta da Meta.
+  // Espera um instante antes de sair da página para o pixel conseguir enviar o clique.
+  function go(url) {
+    setTimeout(function () { window.location.href = url; }, 300);
   }
 
   function prepareResults(step) {
-    if (step === "ok") $("#waOk").href = waLink(qualifiedMessage());
-    if (step === "clt") $("#cltBtn").href = ADV.cltUrl || waLink(cltMessage());
+    // href fixo (número do advogado) para a regra da Meta reconhecer sempre o mesmo botão;
+    // o link com a mensagem personalizada fica guardado e só é usado no clique.
+    var base = "https://wa.me/" + String(ADV.whatsapp).replace(/\D/g, "");
+    if (step === "ok") { $("#waOk").href = base; $("#waOk").dataset.wa = waLink(qualifiedMessage()); }
+    if (step === "clt") { $("#cltBtn").href = ADV.cltUrl || (base + "?text=CLT"); $("#cltBtn").dataset.wa = ADV.cltUrl || waLink(cltMessage()); }
   }
 
   // ---- Slug inválido: não mostra o quiz
@@ -394,14 +374,11 @@ window.ADVOGADOS = {
   });
 
   // ---- Conversões
-  $("#waOk").addEventListener("click", function (e) {
-    e.preventDefault();
-    trackThenGo("Contact", false, this.href);   // evento padrão "Entrar em contato"
-  });
-  $("#cltBtn").addEventListener("click", function (e) {
-    e.preventDefault();
-    // evento separado: não contamina a otimização do Lead principal
-    trackThenGo("LeadCLT", true, this.href);
+  ["#waOk", "#cltBtn"].forEach(function (sel) {
+    $(sel).addEventListener("click", function (e) {
+      e.preventDefault();
+      go(this.dataset.wa || this.href);
+    });
   });
 
   window.__quiz = { next: next, cleanName: cleanName, state: state,
